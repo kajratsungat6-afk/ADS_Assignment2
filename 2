@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+    Node(int v) : val(v), next(nullptr) {}
+};
+
+Node* removeNth(Node* head, int n) {
+    Node dummy(0);
+    dummy.next = head;
+    Node* fast = &dummy;
+    Node* slow = &dummy;
+
+    for (int i = 0; i <= n; i++) fast = fast->next;
+    while (fast) { fast = fast->next; slow = slow->next; }
+
+    Node* del = slow->next;
+    slow->next = slow->next->next;
+    delete del;
+    return dummy.next;
+}
+
+int main() {
+    // Строим 1->2->3->4->5
+    Node* head = new Node(1);
+    Node* cur = head;
+    for (int i = 2; i <= 5; i++) { cur->next = new Node(i); cur = cur->next; }
+
+    head = removeNth(head, 2);
+
+    for (Node* n = head; n; n = n->next) cout << n->val << " ";
+    // 1 2 3 5
+}
