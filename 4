@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct CircularQueue {
+    vector<int> q;
+    int head = 0, tail = 0, size = 0, cap;
+
+    CircularQueue(int c) : cap(c), q(c) {}
+
+    void enqueue(int val) {
+        if (isFull()) { cout << "Full!\n"; return; }
+        q[tail] = val;
+        tail = (tail + 1) % cap;
+        size++;
+    }
+
+    int dequeue() {
+        if (isEmpty()) { cout << "Empty!\n"; return -1; }
+        int val = q[head];
+        head = (head + 1) % cap;
+        size--;
+        return val;
+    }
+
+    bool isFull()  { return size == cap; }
+    bool isEmpty() { return size == 0; }
+};
+
+int main() {
+    CircularQueue cq(4);
+    cq.enqueue(1); cq.enqueue(2); cq.enqueue(3);
+    cout << cq.dequeue() << "\n"; // 1
+    cq.enqueue(4); cq.enqueue(5);
+    cout << cq.isFull() << "\n";  // 1
+    cout << cq.dequeue() << "\n"; // 2
+}
