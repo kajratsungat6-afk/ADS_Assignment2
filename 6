@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node *left, *right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* deleteNode(Node* root, int key) {
+    if (!root) return nullptr;
+
+    if      (key < root->val) root->left  = deleteNode(root->left,  key);
+    else if (key > root->val) root->right = deleteNode(root->right, key);
+    else {
+        if (!root->left)  return root->right; 
+        if (!root->right) return root->left;
+
+        Node* suc = root->right;
+        while (suc->left) suc = suc->left;
+        root->val   = suc->val;
+        root->right = deleteNode(root->right, suc->val);
+    }
+    return root;
+}
+
+void inorder(Node* n) {
+    if (!n) return;
+    inorder(n->left);
+    cout << n->val << " ";
+    inorder(n->right);
+}
+
+int main() {
+    Node* root = new Node(5);
+    root->left  = new Node(3);
+    root->right = new Node(6);
+    root->left->left  = new Node(2);
+    root->left->right = new Node(4);
+    root->right->right = new Node(7);
+
+    inorder(root);  cout << "\n"; 
+    root = deleteNode(root, 3);
+    inorder(root);  cout << "\n"; 
+}
