@@ -23,7 +23,6 @@ Node* removeNth(Node* head, int n) {
 }
 
 int main() {
-    // Строим 1->2->3->4->5
     Node* head = new Node(1);
     Node* cur = head;
     for (int i = 2; i <= 5; i++) { cur->next = new Node(i); cur = cur->next; }
